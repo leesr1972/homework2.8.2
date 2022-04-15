@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private Map<String, Employee> staffOfEmployee = new HashMap<>(Map.of(
-            "ПетровЮрий", new Employee("Петров", "Юрий", 200_000f, 0),
+            "Петров Юрий", new Employee("Петров", "Юрий", 200_000f, 0),
             "Якобсон Иосиф", new Employee("Якобсон", "Иосиф", 180_000f, 0),
             "Стивен Джексон", new Employee("Стивен", "Джексон", 180_000f, 1),
-            "Ким Мария", new Employee("Ким", "Мария", 150_000f, 1),
+            "КимМария", new Employee("Ким", "Мария", 150_000f, 1),
             "Мансурова Амира", new Employee("Мансурова", "Амира", 150_000f, 2),
             "Шевченко Ирина", new Employee("Шевченко", "Ирина", 120_000f, 2),
             "Яцехиро Анимото", new Employee("Яцехиро", "Анимото", 180_000f, 3),
@@ -26,14 +26,24 @@ public class EmployeeServiceImpl implements EmployeeService {
             "Отдел кадров", "Технический отдел"));
 
     @Override
+    public Employee findEmloyee(String lastName, String firstName) {
+        Employee employee = staffOfEmployee.get(lastName + firstName);
+        if (staffOfEmployee.containsKey(lastName + firstName)) {
+            return employee;
+        } else {
+            throw new BadRequest();
+        }
+    }
+
+    @Override
     public Employee addEmployee(String lastName, String firstName, Float salary, Integer departmentId) {
         Employee newEmployee = new Employee(lastName, firstName, salary, departmentId);
-//        if (staffOfEmployee.containsKey(lastName + firstName)) {
-//            throw new BadRequest();
-//        } else {
+        if (staffOfEmployee.containsKey(lastName + firstName)) {
+            throw new BadRequest();
+        } else {
             staffOfEmployee.put(lastName + firstName, newEmployee);
             return newEmployee;
-//        }
+        }
     }
 
     @Override
@@ -45,17 +55,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else {
             throw new NotFound();
         }
-    }
-
-    @Override
-    public Employee findEmloyee(String lastName, String firstName) {
-        Employee employee = staffOfEmployee.get(lastName + firstName);
-        if (staffOfEmployee.containsKey(lastName + firstName)) {
-            return employee;
-        } // else {
-//            throw new BadRequest();
-//        }
-        return null;
     }
 
     @Override

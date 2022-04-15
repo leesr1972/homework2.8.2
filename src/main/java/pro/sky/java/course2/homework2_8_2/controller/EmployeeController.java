@@ -33,7 +33,7 @@ public class EmployeeController {
 
     @GetMapping("/find")
     public String findStaff(@RequestParam String lastName, @RequestParam String firstName) {
-        Employee employee = employeeService.findEmloyee(firstName, lastName);
+        Employee employee = employeeService.findEmloyee(lastName, firstName);
         return employee.getLastName() + " " + employee.getFirstName() + " is found.";
     }
 
